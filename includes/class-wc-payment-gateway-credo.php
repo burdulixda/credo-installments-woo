@@ -26,9 +26,7 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 		// Get settings.
 		$this->title              = $this->get_option( 'title' );
 		$this->description        = $this->get_option( 'description' );
-		$this->vendor_id          = $this->get_option( 'vendor_id' );
-		$this->secret_hash        = $this->get_option( 'secret_hash' );
-		$this->vendor_url         = $this->get_option( 'vendor_url' );
+		$this->merchant_id        = $this->get_option( 'merchant_id' );
 		$this->handling_fee       = $this->get_option( 'handling_fee' );
 		$this->instructions       = $this->get_option( 'instructions' );
 		$this->enable_for_methods = $this->get_option( 'enable_for_methods', array() );
@@ -49,9 +47,7 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 		$this->id                 = 'credo';
 		$this->icon               = apply_filters( 'woocommerce_credo_icon', plugins_url( '../assets/credo_icon.png', __FILE__ ) );
 		$this->method_title       = __( 'Credo Installments', 'credo-woo' );
-		$this->vendor_id          = __( 'Credo Vendor ID', 'credo-woo' );
-		$this->secret_hash        = __( 'Credo Secret Hash (base64)', 'credo-woo' );
-		$this->vendor_url         = __( 'Credo endpoint URL', 'credo-woo' );
+		$this->merchant_id          = __( 'Credo Merchant ID', 'credo-woo' );
 		$this->handling_fee       = __( 'Credo handling fee (%)', 'credo-woo' );
 		$this->method_description = __( 'Pay as you go with Credo bank.', 'credo-woo' );
 		$this->has_fields         = false;
@@ -83,22 +79,10 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 				'default'     => __( 'Pay with cash upon delivery.', 'credo-woo' ),
 				'desc_tip'    => true,
 			),
-			'vendor_id'        => array(
-				'title'       => __( 'Vendor ID', 'credo-woo' ),
+			'merchant_id'        => array(
+				'title'       => __( 'Merchant ID', 'credo-woo' ),
 				'type'        => 'text',
-				'description' => __( 'Add a vendor ID provided by Credo bank.', 'credo-woo' ),
-				'desc_tip'    => true,
-			),
-			'secret_hash'        => array(
-				'title'       => __( 'Secret Hash', 'credo-woo' ),
-				'type'        => 'text',
-				'description' => __( 'Add a base64 encoded secret hash provided by Credo bank.', 'credo-woo' ),
-				'desc_tip'    => true,
-			),
-			'vendor_url'        => array(
-				'title'       => __( 'Vendor URL', 'credo-woo' ),
-				'type'        => 'text',
-				'description' => __( 'Add an endpoint without queries, provided by Credo bank.', 'credo-woo' ),
+				'description' => __( 'Add a merchant ID provided by Credo bank.', 'credo-woo' ),
 				'desc_tip'    => true,
 			),
 			'handling_fee'        => array(
@@ -337,6 +321,7 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 		$order = wc_get_order( $order_id );
 
 		if ( $order->get_total() > 0 ) {
+			$merchant_id = $this->merchant_id;
 		
 			foreach ( WC()->cart->get_cart() as $key => $cart_item ) {
 				/** @var WC_Product $product */
@@ -355,7 +340,7 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 			}
 
 			$credoCart = array(
-				'merchantId' => '8484',
+				'merchantId' => $merchant_id,
 				'orderCode' => $order_id,
 				'check' => md5(serialize($credoProducts)),
 				'products' => $credoProducts
