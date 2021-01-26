@@ -349,7 +349,9 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 			$jsonData = json_encode($credoCart);
 			$jsonData = base64_encode($jsonData);
 
-			$url = 'http://unicov2.ddev.site/wp/wp-admin/admin-ajax.php?action=credo&data=' . $jsonData;
+
+
+			$url = get_admin_url() . 'admin-ajax.php?action=credo&data=' . $jsonData;
 				
 			$response = wp_remote_post( $url, array( 'timeout' => 45 ) );
 		
