@@ -6,7 +6,7 @@
  * Author: George Burduli
  * Author URI: https://github.com/burdulixda
  * Description: A custom WooCommerce payment gateway for processing installments in Credo bank.
- * Version: 1.0.3
+ * Version: 1.0.4
  * License: 1.0
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * text-domain: credo-woo
@@ -34,7 +34,7 @@ function credo_route() {
 	if($_SERVER["REQUEST_METHOD"] === "GET") {
 		$data = $_GET["data"];
 		$data = base64_decode($data);
-		$html = '<form action="http://ganvadeba.credo.ge/widget/" method="post" style="display : none"><input type="hidden" name="credoinstallment" value='. $data .' /><input type="submit" value="go" />	</form>';
+		$html = '<form action="https://ganvadeba.credo.ge/widget/" method="post" style="display : none"><input type="hidden" name="credoinstallment" value='. $data .' /><input type="submit" value="go" />	</form>';
 		$script = "
 			<script>
 				const form = document.querySelector('form');
