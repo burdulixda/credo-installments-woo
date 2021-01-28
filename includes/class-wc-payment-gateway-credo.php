@@ -328,9 +328,12 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 				$product = $cart_item['data'];
 				$product_quantity = $cart_item['quantity'];
 
+				$title = $product->get_name();
+				$sanitized_title = filter_var( $title, FILTER_SANITIZE_URL );
+
 				$credoProduct = array(
 					'id' => $product->get_id(),
-					'title' => $product->get_name(),
+					'title' => $sanitized_title,
 					'amount' => strval($product_quantity),
 					'price' => ceil(($cart_item["line_total"] / 95 * 100 / $product_quantity) * 100),
 					'type' => '1'
@@ -348,8 +351,6 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 
 			$jsonData = json_encode($credoCart);
 			$jsonData = base64_encode($jsonData);
-
-
 
 			$url = get_admin_url() . 'admin-ajax.php?action=credo&data=' . $jsonData;
 				
