@@ -6,7 +6,7 @@
  * Author: George Burduli
  * Author URI: https://github.com/burdulixda
  * Description: A custom WooCommerce payment gateway for processing installments in Credo bank.
- * Version: 1.0.5
+ * Version: 1.1
  * License: 1.0
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * text-domain: credo-woo

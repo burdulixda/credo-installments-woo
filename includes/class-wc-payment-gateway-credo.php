@@ -331,11 +331,17 @@ class WC_Gateway_Credo extends WC_Payment_Gateway {
 				$title = $product->get_name();
 				$sanitized_title = filter_var( $title, FILTER_SANITIZE_URL );
 
+				$price = $order->get_total() * 100;
+
+				if ( $this->handling_fee ) {
+					$price = $price + ($price * $this->handling_fee / 100);
+				}
+
 				$credoProduct = array(
 					'id' => $product->get_id(),
 					'title' => $sanitized_title,
 					'amount' => strval($product_quantity),
-					'price' => ceil(($cart_item["line_total"] / 95 * 100 / $product_quantity) * 100),
+					'price' => $price,
 					'type' => '1'
 				);
 				
